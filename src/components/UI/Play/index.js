@@ -177,7 +177,7 @@ const Play = () => {
     {(game.run.length === 0) ?
       <>
           {(isCreator)? 
-          <button onClick={runGame}>Démarrer la manche</button>
+          <button className="btn-primary" onClick={runGame}>Démarrer la manche</button>
           : 
           <p>En attente de démarrer la partie...</p>
           }

@@ -91,7 +91,7 @@ const DragAndDrop = ({ itemsSended, game, gameId, runGame }) => {
         {(isValidated) ? 
           <>
             <p>Vous avez fait {mistakes} erreurs.</p>
-            <button onClick={runGame}>Passer à la manche suivante</button>
+            <button className="btn-primary" onClick={runGame}>Passer à la manche suivante</button>
           </>
           :
           <>
@@ -126,7 +126,7 @@ const DragAndDrop = ({ itemsSended, game, gameId, runGame }) => {
                 </Droppable>
             </DragDropContext>
 
-            <button onClick={validate}>Valider</button>
+            <button className="btn-primary" onClick={validate}>Valider</button>
           </>
         }
       </>

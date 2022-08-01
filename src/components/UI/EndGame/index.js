@@ -10,7 +10,7 @@ const EndGame = () => {
   return (
     <>
         <p>La partie est terminée !</p>
-        <a class="button" href="/">
+        <a className="btn-primary" href="/">
             Retour à l'accueil
         </a>
     </>);

@@ -32,7 +32,7 @@ const GlobalStyle = createGlobalStyle`
       color: ${(props) => props.theme.brandColor};
     }
 
-    button, .button {
+    button, .btn-primary {
         font-family: Rubik, sans-serif;
         background-color: ${(props) => props.theme.brandColor};
         color: ${(props) => props.theme.textColor};
@@ -47,7 +47,7 @@ const GlobalStyle = createGlobalStyle`
         font-size: 0.9em;
     }
 
-    button:hover, .button:hover {
+    button:hover, .btn-primary:hover {
         background-color: ${(props) => props.theme.backgroundColor};
         border: 1px solid ${(props) => props.theme.brandColor};
         color: ${(props) => props.theme.brandColor};
@@ -62,12 +62,12 @@ const GlobalStyle = createGlobalStyle`
       border-radius: 30px;
     }
 
-    .clip {
+    .btn-secondary {
       background-color: ${(props) => props.theme.secondaryColor};
       color: ${(props) => props.theme.textColor};
     }
 
-    .clip:hover {
+    .btn-secondary:hover {
       background-color: ${(props) => props.theme.backgroundColor};
       border: 1px solid ${(props) => props.theme.secondaryColor};
       color: ${(props) => props.theme.secondaryColor};

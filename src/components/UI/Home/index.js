@@ -1,14 +1,14 @@
-import styled from "styled-components";
+import Intro from "../Intro";
 import { useState } from 'react';
 import { navigate } from "@reach/router";
 import { getFirestore } from "firebase/firestore";
-import { doc, setDoc } from "firebase/firestore"; 
-
-
+import { doc, setDoc } from "firebase/firestore";
 
 export default function Home() {
+    //get database
     const db = getFirestore();
 
+    //create a random id for the game
     function getRandomString(length) {
         var randomChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
         var result = '';
@@ -16,18 +16,18 @@ export default function Home() {
             result += randomChars.charAt(Math.floor(Math.random() * randomChars.length));
         }
         return result;
-    }
+    };
 
-    const [game, setGame] = useState(
-        {
-            id: getRandomString(20),
-            players: [],
-            questionsDone: [],
-            ended: false,
-            mistakes: 0
-        }
-    )
+    //set initial values for the game
+    const [game, setGame] = useState({
+        id: getRandomString(20),
+        players: [],
+        questionsDone: [],
+        ended: false,
+        mistakes: 0
+    });
 
+    //create the party and add it to database
     const createParty = async () => {
         try {
             const docRef = await setDoc(doc(db, "games", game.id), game);
@@ -35,30 +35,27 @@ export default function Home() {
         } catch (e) {
             console.error("Error adding document: ", e);
         }
+    };
 
-    }
+    return (<>
+        <Intro createParty={ createParty }/>
 
-    return (
-        <Wrapper>
-            <h2>Commencer une partie</h2>
+        <h2>Commencer une partie</h2>
 
-            <label>Votre pseudo : </label><br/>
-            <input type="text" value={game.players[0]} onChange={(event) => {
-                let pseudoArr = [];
-                pseudoArr[0] = event.target.value;
-                setGame({
-                    ...game,
-                    players:[...pseudoArr],
-                    run: []
-                })
-            }}/>
-            <br/>
+        <label>Votre pseudo : </label><br/>
+        <input type="text" value={game.players[0]} onChange={(event) => {
+            let pseudoArr = [];
+            pseudoArr[0] = event.target.value;
+            setGame({
+                ...game,
+                players:[...pseudoArr],
+                run: []
+            })
+        }}/>
+        <br/>
 
-            <button onClick={createParty}>
-                Créer une nouvelle partie
-            </button>
-        </Wrapper>
-    )
+        <button className="btn-primary" onClick={createParty}>
+            Créer une nouvelle partie
+        </button>
+    </>);
 }
-
-const Wrapper = styled.div``;

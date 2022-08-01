@@ -1,25 +1,23 @@
 import React, { useState } from 'react';
-import { navigate } from "@reach/router";
+import { navigate, useParams } from "@reach/router";
 import { getFirestore } from "firebase/firestore";
-// Create a reference to the cities collection
 import { doc, updateDoc, arrayUnion } from "firebase/firestore";
 
-
-
-const Join = ({param}) => {
+const Join = () => {
   const [pseudo, setPseudo] = useState('');
+  const param = useParams();
+  const gameId = param.gameId;
   
+  //get game and update it by adding a new player
   const joinParty = async () => {
-      console.log(pseudo);
       const db = getFirestore();
-      const gameRef = doc(db, "games", param);
+      const gameRef = doc(db, "games", gameId);
 
-      // Add the player
       await updateDoc(gameRef, {
         players: arrayUnion(pseudo)
       });
 
-      navigate(`/my-game/${param}`, { state: { 
+      navigate(`/my-game/${gameId}`, { state: { 
         isRegistered: 890989,
         pseudo: pseudo
       } });
@@ -34,7 +32,7 @@ const Join = ({param}) => {
     }}/>
     <br/>
 
-    <button onClick={joinParty}>
+    <button className="btn-primary" onClick={joinParty}>
         Rejoindre
     </button>
   </div>);

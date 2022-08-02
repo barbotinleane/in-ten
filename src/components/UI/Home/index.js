@@ -24,7 +24,7 @@ export default function Home() {
         players: [],
         questionsDone: [],
         ended: false,
-        mistakes: 0
+        mistakes: 10
     });
 
     //create the party and add it to database

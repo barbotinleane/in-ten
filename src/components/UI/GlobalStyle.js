@@ -32,6 +32,10 @@ const GlobalStyle = createGlobalStyle`
       color: ${(props) => props.theme.brandColor};
     }
     
+    .size-1 {
+      font-size: 0.5em;
+    }
+    
     .size-5 {
       font-size: 5em;
     }
@@ -104,7 +108,7 @@ const GlobalStyle = createGlobalStyle`
       font-size: 4em;
       background-color: ${(props) => props.theme.brandColor};
       padding: 10px;
-      width: 50px;
+      width: 120px;
       margin: auto;
       border-radius: 30px;
     }

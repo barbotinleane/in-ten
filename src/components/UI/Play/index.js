@@ -8,8 +8,9 @@ import { getGame, getQuestion } from '../../../firestore';
 import EndGame from '../EndGame';
 import Player from '../Player';
 import DragAndDrop from '../DragAndDrop';
-import { faUser, faStar } from "@fortawesome/free-solid-svg-icons";
+import { faUser, faHeart } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import ReactSpeedometer from "react-d3-speedometer"
 
 const Play = () => {
   const params = useParams();
@@ -93,7 +94,7 @@ const Play = () => {
     const db = getFirestore();
     const gameRef = doc(db, "games", params.gameId);
 
-    if(game.questionsDone.length >= 9) {
+    if(game.mistakes <= 0) {
       let endGame = {
         id: game.id,
         players: [...game.players],
@@ -173,15 +174,21 @@ const Play = () => {
         &nbsp;{pseudo}
       </div>
       <div>
-        <FontAwesomeIcon icon={ faStar }/>
+        <FontAwesomeIcon icon={ faHeart }/>
         &nbsp;{game.mistakes}
       </div>
     </Player>
 
     {(game.run.length === 0) ?
       <>
-          {(isCreator)? 
-          <button className="btn-primary" onClick={runGame}>Démarrer la manche</button>
+          {(isCreator)?
+          <>
+            <p>
+              Vous avez 10 vies. A chaque erreur dans l'ordre des réponses donné par le lecteur, vous perdez une vie.
+              A vous de tenir le plus longtemps possible !
+            </p>
+            <button className="btn-primary" onClick={runGame}>Démarrer la manche</button>
+          </>
           : 
           <p>En attente de démarrer la partie...</p>
           }
@@ -200,7 +207,7 @@ const Play = () => {
                   <p>{question.question}</p>
                   <p>{question.intensity}</p>
                 </Question>
-                <p>Attendez que chaque joueur donne sa réponse puis replacez les dans l'ordre de leur réponse...</p>
+                <p>Attendez que chaque joueur donne sa réponse oralement puis replacez les réponses dans l'ordre...</p>
                 <DragAndDrop itemsSended={notReader} game={game} gameId={params.gameId} runGame={runGame}/>
               </>
               :<>
@@ -210,8 +217,15 @@ const Play = () => {
                   <p>{question.question}</p>
                   <p>{question.intensity}</p>
                 </Question>
-                <h2>Lorsque ce sera votre tour, vous donnerez une réponse avec l'intensité : </h2>
-                <p className='intensity'>{intensity}</p>
+                <h2>Lorsque ce sera votre tour, inventez et donnez oralement une réponse avec l'intensité : </h2>
+                <ReactSpeedometer
+                  maxValue={game.players.length}
+                  value={intensity}
+                  segments={game.players.length}
+                  needleColor="#2C4251"
+                  startColor="#B6C649"
+                  endColor="#D16666"
+                />
               </>
             }
           </>
@@ -226,7 +240,7 @@ export default Play;
 
 const Question = styled.div`
     text-align: center;
-    color: ${(props) => props.theme.brandColor};
+    color: ${(props) => props.theme.textColor};
     background-color: ${(props) => props.theme.secondaryColor};
     margin: auto;
     padding: 20px;

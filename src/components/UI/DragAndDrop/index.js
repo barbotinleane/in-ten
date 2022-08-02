@@ -84,7 +84,7 @@ const DragAndDrop = ({ itemsSended, game, gameId, runGame }) => {
     let mistakesCounter = 0;
     for(let i=1; i<items.length; i++) {
         if(items[i].intensity < items[i-1].intensity){
-            endGame.mistakes = endGame.mistakes + 1;
+            endGame.mistakes = endGame.mistakes - 1;
             mistakesCounter++;
         }
     }
@@ -102,9 +102,9 @@ const DragAndDrop = ({ itemsSended, game, gameId, runGame }) => {
       <>
         {(isValidated) ? 
           <>
-            <p>Vous avez fait {mistakes} erreurs.</p>
+            <p>Vous avez perdu {mistakes} vies.</p>
             <div>
-                Le bon ordre était :
+                Le bon ordre des réponses était :
                 <div className="row">
                     {playersByIntensity.map((item) => (
                         <div className="box-grey">{item}</div>

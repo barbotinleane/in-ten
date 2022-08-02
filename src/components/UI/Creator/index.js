@@ -20,7 +20,6 @@ const StartParty = () => {
   });
 
   const [text, setText] = useState("Inviter");
-  const [players, setPlayers] = useState(1);
   const location = useLocation();
 
   //check if the visitor is the creator of the party

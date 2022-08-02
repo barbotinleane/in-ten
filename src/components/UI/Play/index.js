@@ -8,6 +8,8 @@ import { getGame, getQuestion } from '../../../firestore';
 import EndGame from '../EndGame';
 import Player from '../Player';
 import DragAndDrop from '../DragAndDrop';
+import { faUser, faStar } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const Play = () => {
   const params = useParams();
@@ -72,19 +74,19 @@ const Play = () => {
 
   const getRandomQuestion = async() => {
     const querySnapshot = await getQuestion([...game.questionsDone]);
-    let listeDeQuestions = [];
+    let questionsList = [];
 
     querySnapshot.forEach((doc) => {
-      listeDeQuestions = [
-        ...listeDeQuestions,
+      questionsList = [
+        ...questionsList,
         {...doc.data()}
       ];
     });
 
-    const numberQuestions = listeDeQuestions.length;
+    const numberQuestions = questionsList.length;
     const randomIndex = Math.floor(Math.random() * (numberQuestions - 0));
 
-    return listeDeQuestions[randomIndex];
+    return questionsList[randomIndex];
   }
 
   const runGame = async() => {
@@ -167,10 +169,12 @@ const Play = () => {
   <>
     <Player>
       <div>
-        {pseudo}
+        <FontAwesomeIcon icon={ faUser }/>
+        &nbsp;{pseudo}
       </div>
       <div>
-        {game.mistakes}
+        <FontAwesomeIcon icon={ faStar }/>
+        &nbsp;{game.mistakes}
       </div>
     </Player>
 

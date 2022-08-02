@@ -14,6 +14,16 @@ const reorder = (list, startIndex, endIndex) => {
   return result;
 };
 
+//order players by intensities and convert the names to an array
+const sortPlayersByIntensityInArray = (players) => {
+    let arrayPlayers = [];
+    for (const player of players) {
+        arrayPlayers[player.intensity-1] = player.pseudo;
+    }
+
+    return arrayPlayers;
+}
+
 const grid = 8;
 
 const getItemStyle = (isDragging, draggableStyle) => ({
@@ -40,6 +50,8 @@ const DragAndDrop = ({ itemsSended, game, gameId, runGame }) => {
     const [items, setItems] = useState([...itemsSended]);
     const [mistakes, setMistakes] = useState(0);
     const [isValidated, setIsValidated] = useState(false);
+    const playersByIntensity = sortPlayersByIntensityInArray(itemsSended);
+
 
     const onDragEnd = (result) => {
         // dropped outside the list
@@ -69,12 +81,14 @@ const DragAndDrop = ({ itemsSended, game, gameId, runGame }) => {
         mistakes: game.mistakes
     };
 
+    let mistakesCounter = 0;
     for(let i=1; i<items.length; i++) {
         if(items[i].intensity < items[i-1].intensity){
             endGame.mistakes = endGame.mistakes + 1;
-            setMistakes(mistakes + 1);
+            mistakesCounter++;
         }
-      }
+    }
+    setMistakes(mistakesCounter);
     
     const db = getFirestore();
     const gameRef = doc(db, "games", gameId);
@@ -84,13 +98,20 @@ const DragAndDrop = ({ itemsSended, game, gameId, runGame }) => {
     setIsValidated(true);
   }
 
-  // Normally you would want to split things out into separate components.
-  // But in this example everything is just done in one place for simplicity
   return (
       <>
         {(isValidated) ? 
           <>
             <p>Vous avez fait {mistakes} erreurs.</p>
+            <div>
+                Le bon ordre était :
+                <div className="row">
+                    {playersByIntensity.map((item) => (
+                        <div className="box-grey">{item}</div>
+                    ))
+                    }
+                </div>
+            </div>
             <button className="btn-primary" onClick={runGame}>Passer à la manche suivante</button>
           </>
           :

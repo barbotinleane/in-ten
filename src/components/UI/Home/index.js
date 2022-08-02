@@ -38,7 +38,7 @@ export default function Home() {
     };
 
     return (<>
-        <Intro createParty={ createParty }/>
+        <Intro/>
 
         <div id="play" className="box-rounded">
             <h2>Commencer une partie</h2>

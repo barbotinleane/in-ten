@@ -38,10 +38,31 @@ const GlobalStyle = createGlobalStyle`
     
     .row-space-around {
       display: flex;
+      flex-direction: row;
       justify-content: space-around;
       align-items: center;
       text-align: left;
       padding: 30px 0px;
+      
+      @media only screen and (max-width: 600px) {
+        flex-direction: column;
+      }
+    }
+    
+    .row {
+      display: flex;
+      flex-direction: row;
+      justify-content: start;
+      align-items: center;
+      padding: 10px;
+      margin: 15px auto;
+      background-color: lightgrey;
+    }
+    
+    .box-grey {
+      background-color: grey;
+      padding: 10px;
+      margin: 0px 5px;
     }
 
     button, .btn-primary {
@@ -110,6 +131,7 @@ const GlobalStyle = createGlobalStyle`
       color: white;
       background-color: ${(props) => props.theme.mainColor};
       padding: 40px;
+      margin: 0px 10px 40px 10px;
       border-radius: 80% 30% 50% 50%/50%;
       box-shadow: 0.375em 0.375em 0 0 rgba(15, 28, 63, 0.125);
       border: 0.1875em solid #0F1C3F;

@@ -31,10 +31,10 @@ export default function Layout() {
             <Main>
                 <Router>
                     <Home path="/" />
-                    <About path="/about" />
-                    <MyGame path="/my-game/:gameId" />
-                    <Play path="/play-game/:gameId" />
-                    <EndGame path="/end-game" />
+                    <About path="/les-regles" />
+                    <MyGame path="/ma-partie/:gameId" />
+                    <Play path="/jouer/:gameId" />
+                    <EndGame path="/finir-la-partie" />
                 </Router>
             </Main>
             

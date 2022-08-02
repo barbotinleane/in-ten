@@ -10,16 +10,20 @@ import { faLink, faPlay } from '@fortawesome/free-solid-svg-icons'
 const StartParty = () => {
   const params = useParams();
   const db = getFirestore();
-  
+
+  //initiate the game
   const [game, setGame] = useState({
     id:params.gameId,
     players:[],
     questionsDone: [],
     started:false
   });
+
   const [text, setText] = useState("Inviter");
-  
+  const [players, setPlayers] = useState(1);
   const location = useLocation();
+
+  //check if the visitor is the creator of the party
   let isCreator = false;
   if(location.state !== null){
       if(location.state.creatorId === 890989){
@@ -40,7 +44,7 @@ const StartParty = () => {
   //every seconds test if game is started
   setInterval(() => {
         if(game.started === true) {
-            navigate(`/play-game/${game.id}`, { state: { 
+            navigate(`/jouer/${game.id}`, { state: {
                 pseudo: location.state.pseudo,
                 isCreator
             } });
@@ -55,7 +59,7 @@ const StartParty = () => {
       });
 
       const pseudo = game.players[0];
-      navigate(`/play-game/${game.id}`, { state: { 
+      navigate(`/jouer/${game.id}`, { state: {
           pseudo,
           isCreator
       } });
@@ -90,12 +94,20 @@ const StartParty = () => {
               &nbsp;{text}
           </button>
           {(isCreator === true) ? 
-          <button className="btn-primary" onClick={startGame}>
+          <button className={(game.players.length < 5) ? `btn-primary btn-primary-disabled` : 'btn-primary'}
+                  onClick={startGame}
+                  disabled={(game.players.length < 5)}>
               <FontAwesomeIcon icon={faPlay}/>
               &nbsp;Démarrer la partie
           </button> 
           : <></>}
       </div>
+
+      {(game.players.length < 5) ?
+          <p className="italic">
+              Un minimum de 5 joueurs est nécessaire pour démarrer une partie
+          </p>
+      : <></>}
   </>);
 };
 

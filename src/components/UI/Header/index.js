@@ -17,9 +17,9 @@ export default function Header({ isLight, handleToggleTheme }) {
                         Jouer
                     </MenuEl>
                 </Link>
-                <Link to="/about">
+                <Link to="/les-regles">
                     <MenuEl isCurrentPage={(window.location.pathname === "/about")? true : false}>
-                        A Propos
+                        Les règles
                     </MenuEl>
                 </Link>
             </nav>

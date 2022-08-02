@@ -17,7 +17,7 @@ const Join = () => {
         players: arrayUnion(pseudo)
       });
 
-      navigate(`/my-game/${gameId}`, { state: { 
+      navigate(`/ma-partie/${gameId}`, { state: {
         isRegistered: 890989,
         pseudo: pseudo
       } });

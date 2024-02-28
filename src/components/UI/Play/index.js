@@ -1,12 +1,12 @@
 import React from 'react';
-import styled from "styled-components";
-import { useParams, useLocation, navigate } from "@reach/router";
+import { useParams, useLocation } from "@reach/router";
 import { doc, updateDoc } from "firebase/firestore";
 import { getFirestore } from "firebase/firestore";
 import { useState, useEffect } from 'react';
 import { getGame, getQuestion } from '../../../firestore';
 import EndGame from '../EndGame';
 import Player from '../Player';
+import Question from '../Question';
 import DragAndDrop from '../DragAndDrop';
 import { faUser, faHeart } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -55,6 +55,7 @@ const Play = () => {
       ])
 
       setReader(game.run[numberOfRuns - 1].reader);
+      setIndexReader(game.players.indexOf(game.run[numberOfRuns - 1].reader) + 1)
       
       if(pseudo === game.run[numberOfRuns - 1].reader) {
         setIsReader(true);
@@ -94,7 +95,7 @@ const Play = () => {
     const db = getFirestore();
     const gameRef = doc(db, "games", params.gameId);
 
-    if(game.mistakes <= 0) {
+    if(game.mistakes <= 0 || game.run.length >= 10) {
       let endGame = {
         id: game.id,
         players: [...game.players],
@@ -113,18 +114,20 @@ const Play = () => {
         setPseudo(game.players[0]);
       }
       
+      //change reader for next run
       let numberPlayers = game.players.length;
-      setIndexReader(indexReader + 1);
       if(indexReader > (numberPlayers - 1)) {
         setIndexReader(0);
       }
       let otherPlayers = [];
+
+      //get array of intensities
       let intensities = [];
-      
       for(let i=1; i<=(numberPlayers-1); i++) {
         intensities.push(i);
       }
 
+      //define random intensity for each player
       for(const player of game.players) {
         if(game.players[indexReader] !== player){
           const randomIntensity = intensities[Math.floor(Math.random() * intensities.length)];
@@ -196,27 +199,21 @@ const Play = () => {
       :<>
         {(isEnded)? 
           <>
-            <EndGame/>
+            <EndGame game={game}/>
           </>
           : 
           <>
             {(isReader)?
               <>
                 <p>{pseudo}, lisez la question suivante aux autres joueurs : </p>
-                <Question>
-                  <p>{question.question}</p>
-                  <p>{question.intensity}</p>
-                </Question>
+                <Question question={question}/>
                 <p>Attendez que chaque joueur donne sa réponse oralement puis replacez les réponses dans l'ordre...</p>
                 <DragAndDrop itemsSended={notReader} game={game} gameId={params.gameId} runGame={runGame}/>
               </>
               :<>
                 <p>Le lecteur est : {reader}</p>
                 <h1>La question : </h1>
-                <Question>
-                  <p>{question.question}</p>
-                  <p>{question.intensity}</p>
-                </Question>
+                <Question question={question}/>
                 <h2>Lorsque ce sera votre tour, inventez et donnez oralement une réponse avec l'intensité : </h2>
                 <ReactSpeedometer
                   maxValue={game.players.length}
@@ -236,15 +233,3 @@ const Play = () => {
 };
 
 export default Play;
-
-
-const Question = styled.div`
-    text-align: center;
-    color: ${(props) => props.theme.textColor};
-    background-color: ${(props) => props.theme.secondaryColor};
-    margin: auto;
-    padding: 20px;
-    width: 80%;
-    border-radius: 30px;
-    border-bottom: 1px solid lightgrey;
-`;

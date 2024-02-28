@@ -1,5 +1,8 @@
 {
   "projects": {
-    "default": "inten-a5038"
-  }
+    "default": "in10-2732f",
+    "in10": "in10-2732f"
+  },
+  "targets": {},
+  "etags": {}
 }

@@ -1,4 +1,3 @@
-import styled from "styled-components";
 
 export default function About() {
     return (
@@ -39,6 +38,10 @@ export default function About() {
                 inTen est un jeu collaboratif. Le but du jeu est de donner des réponses qui
                 permettront au lecteur de replacer chaque réponse dans le bon ordre en faisant
                 un sans faute !
+            </p>
+            <p>
+                Un compteur de fautes s'affiche. Si l'équipe réussi à enchainer 10 questions pour moins de 10 fautes, elle gagne... 
+                Alors, prêts à relever le défi ?
             </p>
         </section>
     )

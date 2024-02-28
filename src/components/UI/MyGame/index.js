@@ -1,4 +1,4 @@
-import StartParty from "../Creator";
+import StartParty from "../StartParty";
 import { useLocation } from "@reach/router"
 import Join from "../Join";
 

@@ -43,7 +43,7 @@ const StartParty = () => {
   //every seconds test if game is started
   setInterval(() => {
         if(game.started === true) {
-            navigate(`/jouer/${game.id}`, { state: {
+            navigate(`/play/${game.id}`, { state: {
                 pseudo: location.state.pseudo,
                 isCreator
             } });
@@ -58,7 +58,7 @@ const StartParty = () => {
       });
 
       const pseudo = game.players[0];
-      navigate(`/jouer/${game.id}`, { state: {
+      navigate(`/play/${game.id}`, { state: {
           pseudo,
           isCreator
       } });

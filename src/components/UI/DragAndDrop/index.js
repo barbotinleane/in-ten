@@ -4,8 +4,6 @@ import { doc, updateDoc } from "firebase/firestore";
 import { getFirestore } from "firebase/firestore";
 
 
-
-// a little function to help us with reordering the result
 const reorder = (list, startIndex, endIndex) => {
   const result = Array.from(list);
   const [removed] = result.splice(startIndex, 1);
@@ -14,7 +12,7 @@ const reorder = (list, startIndex, endIndex) => {
   return result;
 };
 
-//order players by intensities and convert the names to an array
+//order array of players by intensities
 const sortPlayersByIntensityInArray = (players) => {
     let arrayPlayers = [];
     for (const player of players) {
@@ -27,15 +25,14 @@ const sortPlayersByIntensityInArray = (players) => {
 const grid = 8;
 
 const getItemStyle = (isDragging, draggableStyle) => ({
-  // some basic styles to make the items look a bit nicer
+  //items style
   userSelect: 'none',
   padding: grid * 2,
   margin: `0 ${grid}px 0 0`,
 
-  // change background colour if dragging
+  //change background colour if dragging
   background: isDragging ? 'lightgreen' : 'grey',
 
-  // styles we need to apply on draggables
   ...draggableStyle,
 });
 
@@ -56,17 +53,17 @@ const DragAndDrop = ({ itemsSended, game, gameId, runGame }) => {
     const onDragEnd = (result) => {
         // dropped outside the list
         if (!result.destination) {
-        return;
+          return;
         }
 
         const newArrayItems = reorder(
-        [...items],
-        result.source.index,
-        result.destination.index
+          [...items],
+          result.source.index,
+          result.destination.index
         );
 
         setItems([
-        ...newArrayItems
+          ...newArrayItems
         ]);
     }
 
@@ -106,8 +103,8 @@ const DragAndDrop = ({ itemsSended, game, gameId, runGame }) => {
             <div>
                 Le bon ordre des réponses était :
                 <div className="row">
-                    {playersByIntensity.map((item) => (
-                        <div className="box-grey">{item}</div>
+                    {playersByIntensity.map((item, index) => (
+                      <div className="box-grey" key={index}>{item}</div>
                     ))
                     }
                 </div>
@@ -125,9 +122,10 @@ const DragAndDrop = ({ itemsSended, game, gameId, runGame }) => {
                     {...provided.droppableProps}
                     >
                     {items.map((item, index) => (
-                        <Draggable key={item.pseudo} draggableId={item.pseudo} index={index}>
-                        {(provided, snapshot) => (
+                        <Draggable draggableId={item.pseudo} index={index} key={item.pseudo}>
+                          {(provided, snapshot) => (
                             <div
+                            key={item.pseudo}
                             ref={provided.innerRef}
                             {...provided.draggableProps}
                             {...provided.dragHandleProps}
@@ -138,7 +136,7 @@ const DragAndDrop = ({ itemsSended, game, gameId, runGame }) => {
                             >
                             {item.pseudo}
                             </div>
-                        )}
+                          )}
                         </Draggable>
                     ))}
                     {provided.placeholder}

@@ -1,13 +1,10 @@
 import Intro from "../Intro";
 import { useState } from 'react';
 import { navigate } from "@reach/router";
-import { getFirestore } from "firebase/firestore";
-import { doc, setDoc } from "firebase/firestore";
+import { doc, setDoc, getDocs, collection } from "firebase/firestore";
+import { db } from "index";
 
 export default function Home() {
-    //get database
-    const db = getFirestore();
-
     //create a random id for the game
     function getRandomString(length) {
         var randomChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -21,7 +18,7 @@ export default function Home() {
     //set initial values for the game
     const [game, setGame] = useState({
         id: getRandomString(20),
-        players: [],
+        players: [''],
         questionsDone: [],
         ended: false,
         mistakes: 10
@@ -31,7 +28,7 @@ export default function Home() {
     const createParty = async () => {
         try {
             const docRef = await setDoc(doc(db, "games", game.id), game);
-            navigate(`/ma-partie/${game.id}`, { state: { creatorId: 890989 } });
+            navigate(`/start-game/${game.id}`, { state: { creatorId: 890989 } });
         } catch (e) {
             console.error("Error adding document: ", e);
         }
@@ -55,7 +52,7 @@ export default function Home() {
             }}/>
             <br/>
 
-            <button className="btn-secondary" onClick={createParty}>
+            <button className="btn-secondary" onClick={createParty} disabled={(game.players[0].length < 1)}>
                 Créer une nouvelle partie
             </button>
         </div>

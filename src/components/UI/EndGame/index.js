@@ -1,19 +1,30 @@
 import React from 'react';
-import { navigate } from "@reach/router";
 
-const EndGame = () => {
-  const returnHome = async() => {
-    await navigate("/", { replace: true });
-  }
-
+const EndGame = ({ game }) => {
   return (
     <>
-        <p>
-            Dommage... Vous avez perdu toutes vos vies !
-        </p>
-        <a className="btn-primary" href="/">
-            Retour à l'accueil
-        </a>
+        {game.mistakes >= 10 ?
+          <>
+            <p>
+              Dommage... Vous avez perdu toutes vos vies !
+            </p>
+            <a className="btn-primary" href="/">
+              Faire une revanche
+            </a>
+          </>
+          :
+          <>
+            <p>
+              Félicitations ! Vous avez fait moins de 10 erreurs sur 10 questions !!
+            </p>
+            <p>
+              Prêts pour une autre partie ?
+            </p>
+            <a className="btn-primary" href="/">
+                Rejouer
+            </a>
+          </>
+        }
     </>);
 };
 
